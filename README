@@ -1,0 +1,20 @@
+Corey Della Pietra
+CIS 4930 Assignment 3 
+
+--------------------------------------------------
+
+1. Run 'make' command to create the executable file 'NaiveBayes'
+
+2. To use the classifier, execute:
+	NaiveBayes <training_file> <test_file> 
+
+3. Program will out the results of the classifier in the following format:
+	(training file) TP FN FP TN
+	(testing file)  TP FN FP TN
+
+   Where TP = true positive
+	 FN = false negative
+	 FP = false positive
+	 TN = true negative
+
+4. Run 'make clean' command to delete executable, object file, and core dump

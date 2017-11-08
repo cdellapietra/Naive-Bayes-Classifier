@@ -1,0 +1,82 @@
+Corey Della Pietra
+CIS 4930 Assignment 3 Report
+----------------------------
+
+This program is a classifier utilizing the Naive Bayes Classification method. 
+Naive Bayes performs basic categorical classification using conditional 
+probability. This implementation only supports two-class classification based on 
+discrete, non-continuous attributes. 
+
+To implement the classifier, I chose a std::map as the core data structure for 
+the training files. The std::map hash structure is preferrable due to its quick 
+O(log n) function complexity for executing searches. Two maps are used in this 
+implementation, one for the first class (+1) and one for the second class (-1).
+
+In order to fill the maps, we open the training file and load each line into a 
+buffer one at a time. We then parse the line, reading in the label first at the 
+beginning of the line. If the label is marked as "+1" we select the map 
+corresponding to storage of "+1" attribute data, and vice versa for class "-1". 
+A loop begins, reading in index:attribute pairs one at a time until the end of 
+the line is reached. Each index:attribute pair acts as a key, and when hashed, 
+the number of occurences for that unique pair increments.
+
+For the the files 'led.train' and 'led.test', this is somewhat superfluous 
+since each attribute is binary.
+
+However, for the files 'breast_cancer.train' and 'breast_cancer.test', this 
+two-dimensional functionality is required to properly index entries, since there 
+are more than two options per attribute. 
+
+To classify tuples in a test file, the program proceeds by parsing the test file 
+just as before, but instead of inserting elements as training data, they are 
+passed to a probability function. The function computes the probability that an 
+index:attribute pair belongs belongs in the given class by computing
+
+	# index:attribute pairs / total entries in class
+
+for both classes. The result is stored in a variable outside of the function, 
+which collects the cummulative product (probability) for its corresponding 
+class. If there are 0 occurences of an index:attribute pair, smoothing is 
+utilized.
+
+The probability is computed for both classes, and the two are compared. The 
+larger probability determines how the classifier would label the tuple. If the 
+classifier's guess matches the original label, increment a counter corresponding 
+to 'true (positive/negative)'. If the guess does not match, increment a counter 
+corresponding to 'false (positive/negative)'.
+
+
+
+                         OUTPUT FORMAT
+                         --------------
+  <training_file>        TP  FN  FP  TN	
+  <testing_file>         TP  FN  FP  TN	  
+
+  Accuracy = (TP + TN) / (TP + FN + FP + TN)
+
+
+
+  <led.train>	         468 170 319 1130	
+  <led.test>             253  98 181  602	  
+
+  Accuracy (.train)  = (468 + 1130) / (468 + 170 + 319 + 1130) ~= 77 %
+  Accuracy (.test)   = (253 + 602) / (253 + 98 + 181 + 602) ~= 75 %
+
+
+
+  <breast_cancer.train>	  37  19  37  87   
+  <breast_cancer.test>    20   9  24  53
+
+  Accuracy (.train) = (37 + 87) / (37 + 19 + 37 + 87) ~= 69 %
+  Accuracy (.test)  = (20 + 53) / (20 + 9 + 24 + 53) ~= 69 %
+
+
+
+Both outputs yield significant results in terms of accuracy. The lower accuracy 
+measured on the breast_cancer dataset is presumably due to its complexity in 
+contrast with the led dataset (i.e. is not binary). 
+
+In summation, I am satisfied with the functionality of this simple classifier. 
+It can be further improved to support more two classes with minor adjustments to 
+the code. The existing code is universal in many respects, and many of its 
+functions can just be simply called again in future implementations. 
